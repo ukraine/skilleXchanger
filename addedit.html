@@ -1,0 +1,117 @@
+<p>Обязательные к заполнению поля помечены красной зведочкой <span class='requiredfield'>*</span></p>
+
+
+
+
+<!-- <TABLE style="height: 43px; margin-bottom: -2px; z-index:2; width: 340px !important;">
+<TR>
+	<TD width="150"><div style="
+	padding: 9px 3px 0 3px; 
+	margin-left: 10px; 
+	font-weight: bold;
+	font-size: 110%;
+	width: 130px; 
+	color: white;
+	text-align: center;
+	height: 37px; 
+	display: block;
+	background: url(./img/current-bg.gif) repeat-x;
+	margin-bottom: -16px;
+	">Простая форма</div></TD>
+
+	<TD><div style="
+	margin-bottom: -21px;
+	font-weight: bold;
+	font-size: 110%;
+	color: #0079b2;
+	text-align: center;
+	height: 37px; 
+	">Расширенная форма</div></TD>
+</TR>
+</TABLE> -->
+
+<form method="post" action="" style="border: 1px solid #ccc; width: 650px; background: url(./img/form-bg.gif) repeat-x;">
+        
+		<h3>Кратко о вас:</h3>
+
+			<? 
+			GenerateInputTag("name","Ваш настоящее имя");
+			echo "<span id='antis'>&nbsp;</span>";
+			GenerateInputTag("nickname","Ваш ник на форуме");
+			GenerateInputTag("email","Адрес вашей электропочты");
+			GenerateInputTag("forumprofile","Ссылка на ваш профиль на форуме");
+			GenerateInputTag("region_id","Ваш регион (населенный пункт/район)");
+
+			// выбор основного форума обитания
+			?>
+
+		<h3>О вашей работе:</h3>
+
+			<? 
+			GenerateTextAreaTag("activity","Краткое описание вашей деятельности");
+			GenerateInputTag("company","Название компании, в которой вы работаете");
+			GenerateInputTag("position","Занимаемая должность");
+			?>
+
+		<h3>Об услугах:</h3>
+
+			<? 
+			GenerateTextAreaTag("willhelp","Здесь напишите, чем cможете помочь, какие услуги предоставить"); ?>
+			<br>
+			<?
+			GenerateTextAreaTag("needhelp","Если сами нуждаетесь в помощи или услуге, напишите об этом");
+			?>
+
+		<h3>Другие способы с вами связаться:</h3>
+
+			<? 
+			// вставка select адреса/района
+			GenerateInputTag("phone","Номер телефона (желательно мобильный)");
+			GenerateInputTag("icq","Номер аськи");
+			GenerateInputTag("url","Адрес сайта, если есть");
+			?>
+
+		<h3>Прочее:</h3>
+
+			<?
+			GenerateInputTag("govnumber","Госномер вашего авто - для приветов на дорогах"); ?>
+			<div style="color:red; padding-left: 17px;"><b>Внимание!</b> Еще раз уточню, что это поле необязательно вводить, а если вводите, то не более трех цифр и только цифр!</div><br>
+			<?
+			GenerateTextAreaTag("other","Написанное здесь отобразится в примечании к вашему профилю");
+			?>
+
+		<h3>Пароль для изменения своего профилия в будущем:</h3>
+			<?
+			GenerateInputTag("password","Придумайте и впечатайте пароль");
+			?>
+
+
+			<!-- admin -->
+
+		<? if ($admin) { ?>
+	
+		<h3>Разрешить публикацию профиля:</h3>
+
+			<select name='visibility' style="width: auto;">
+				<option value='1' <? selectv2('visibility', '1'); ?>>Да</option>
+				<option value='2' <? selectv2('visibility', '2'); ?>>Нет</option>
+				<option value='3' <? selectv2('visibility', '3'); ?>>Черновик</option>
+			</select><br>
+
+		<? } ?>
+
+			<!-- admin -->
+
+			<div class="sendrequest">
+				<input type="submit"					value="Сохранить информацию о себе в этой системе">
+				<input type="hidden"	name="action"	value="do_<? echo strtolower($_GET['action']); ?>">
+				<? GenerateInputTag("id","","hidden"); ?>
+			</div>
+
+<script language="JavaScript">
+<!-- 
+GenerateSomethingCool()
+//-->
+</script>
+
+</form>

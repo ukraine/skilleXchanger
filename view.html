@@ -1,0 +1,126 @@
+<div class="actions">
+
+<? if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin']!== "yes") { ?>
+
+Если это ваш профиль, то вы можете<BR>
+отредактировать информацию в нем, <BR>
+введя полученные данные для входа <BR>
+в специальной форме вверху<BR>
+<BR>
+<I>Если ваш емейл не был указан в профиле,<BR>
+или вы по какой-то причине не получили пароль,<BR>
+обратитесь ко мне в аську (699199) за помощью</I>
+
+<? } else { ?> 
+
+<br><br><a href="./?action=edit&id=<?=$_GET['id'];?>">Редактировать</a>
+
+<? } ?>
+
+</div>
+
+<div class="viewprofile">
+<table id="90">
+
+ <tr><td colspan="2" class="zagolovok">
+ <h3 id="first"><? echo $f['nickname']?></h3></td>
+ </tr>
+
+   <tr>
+    <td class="column1">Актуальность контакта
+    </td>
+    <td class='column2'><? echo ifExistGetValue('timestamp') ?></td>
+  </tr>
+
+   <tr>
+    <td class="column1">Настоящее имя
+    </td>
+    <td class='column2'><? echo ifExistGetValue('name') ?></td>
+  </tr>
+
+   <tr>
+    <td class="column1">Регион
+    </td>
+    <td class='column2'><? echo ifExistGetValue('region_id') ?></td>
+  </tr>
+
+   <tr>
+    <td class="column1">Профиль на форуме
+    </td>
+    <td class='column2'><a href="<? echo ifExistGetValue('forumprofile') ?>"><? echo ifExistGetValue('forumprofile') ?></a></td>
+  </tr>
+
+ <tr><td colspan="2"><h4>Помощь</h4></td></tr>
+
+  <tr>
+    <td class="column1">Нуждаюсь в помощи в:
+    </td>
+    <td class='column2'><? echo ifExistGetValue('needhelp') ?></td>
+  </tr>	
+
+  <tr>
+    <td class="column1">Окажу помощь в:
+    </td>
+    <td class='column2'><? echo ifExistGetValue('willhelp') ?></td>
+  </tr>	
+
+<tr><td colspan="2"><h4>Работа</h4></td></tr>
+
+  <tr>
+    <td class="column1">Должность</td>
+    <td class='column2'><? echo $f['position']; ?></td>
+  </tr	
+
+  <tr>
+    <td class="column1">Компания</td>
+    <td class='column2'><? echo $f['company']; ?></td>
+  </tr>
+
+  <tr>
+    <td class="column1">Род деятельности</td>
+    <td class='column2'><? echo $f['activity']; ?></td>
+  </tr>
+
+<tr><td colspan="2"><h4>Контакты</h4></td></tr>
+	
+	<tr>
+		<td class="column1">Email</td>
+		<td class='column2'>
+	<? if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin']!== "yes") { echo "
+	<a href='javascript:void(0)' onclick=\"openURL('$f[id]')\">Написать письмо через этот сайт</a>";
+	}
+	else echo "<a href='mailto:$f[email]'>$f[email]</a>";
+	?>
+
+
+		
+		</td>
+
+	</tr>
+
+	<tr>
+		<td class="column1">Телефон</td>
+		<td class='column2'><? echo ifExistGetValue('phone'); ?></td>
+	</tr>
+
+	<tr>
+		<td class="column1">Аська</td>
+<!-- 		<td class='column2'><a href="http://wwp.icq.com/scripts/contact.dll?msgto=<? echo ifExistGetValue('icq'); ?>"><? echo ifExistGetValue('icq'); ?></a>&nbsp;</td> -->
+		<td class='column2'><? echo ifExistGetValue('icq'); ?>&nbsp;</td>
+	</tr>
+
+	<tr>
+		<td class="column1">Сайт</td>
+		<td class='column2'><a href="http://<? echo str_replace("http://","",$f['url']) ?>" target="_blank"><? echo ifExistGetValue('url'); ?></a>&nbsp;</td>
+	</tr>
+
+<tr><td colspan="2"><h4>Другое</h4></td></tr>
+
+	<tr>
+		<td class="column1">Примечание</td>
+		<td class='column2'><? echo ifExistGetValue('other'); ?>&nbsp;</td>
+	</tr>
+
+
+</table>
+</div>

@@ -1,0 +1,41 @@
+<div class="unhide">
+
+
+
+<p style='color: #999;'>Обязательные к заполнению поля помечены красной зведочкой <span class='requiredfield'>*</span></p>
+
+<form method="post" action="" style="" class="emaform">
+        
+			<? 
+			GenerateInputTagForEmailSending("yourname","Ваше имя");
+			GenerateInputTagForEmailSending("email","Адрес вашей электропочты");
+			GenerateInputTagForEmailSending("subject","Тема сообщения");
+			echo "<br>";
+			GenerateTextAreaTag4EmalSedning("content","Краткое сообщение пользователю");
+			echo "		<textarea name='message' id='message'></textarea>";
+			?>
+			<B>Внимание:</B> сообщения с ссылками будут блокироваться.
+
+			<div><br><input type="submit"					value="Отправить письмо">
+<!-- <span style="top: 440x; left: 355px; position: absolute;"><a href="javascript:window.close()"><img src="./img/close.gif" title="Закрыть окно"></a></span> -->
+			<input type="hidden"	name="action"	value="do_emailto">
+			<input type="hidden"	name="id"	value="<? echo $_GET['id']; ?>">
+			</div>
+
+
+
+
+
+
+</div>
+
+
+
+<div class="demover" style="border-top: 1px solid #ccc;">
+
+	&nbsp; 2008 (c)<a href="./?action=view&id=313" style="text-decoration: underline;" target="_parent">Яцив Юрий</a> - 	<a href="javascript:void(0)" onclick="openURL('313')" style="text-decoration: underline;">Написать мне письмо</a> &nbsp;Аська службы поддержки 699199
+
+
+</div>
+
+</div>

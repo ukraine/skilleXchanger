@@ -1,0 +1,151 @@
+<table width="100%" border="0" cellspacing="00" cellpadding="0">
+  <tr> 
+    <td width="45"><img src="./img/person.png"></td>
+    <td>
+      <div><B>Поиск человека по нику</B></div>
+      <div style="font-size: 80%; color: #999;">А себя вы уже пробовали искать?</div>
+      <form method="post" action="" class="searchperson" >
+        <input type="text" name="q" value="<? echo ifExistGetValue('nickname') ?>" title="Введите емейл или ник, потом жмите на кнопке &quot;Найти&quot;">
+		<input type="hidden" name="action" value="do_search">
+        <input type="submit" value="Найти">
+      </form>
+    </td>
+  </tr>
+</table>
+
+<? if ($count > 0) { ?>
+
+<table class="paginator">
+	<tr>
+		<td width="33%" class="showing">
+		<? echo "Отображаю контакты с <B>$startobject</B> по <B>$endobject</B> из <B>$count</B> имеющихся"; ?></td>
+		<td width="33%" align="center" class="itemsonpage">
+
+						Кол-во контактов на страницу:
+						<? foreach ($itemlimitation as $value) {
+						
+						if ($limit != $value) echo "<a href='?limit=$value'>$value</a> &nbsp;";
+						else echo "<B>$value</B> &nbsp;";
+						
+						} ?>
+
+
+		</td>
+		<td width="33%" align="right" class="paging">
+
+		<form name="PageNav" method="GET" action="">
+		Перейти к странице &nbsp; 
+
+	<select name="page" style='font-size: 80%; width: 40px; margin: 0;' onChange="GotoPageNumber()">
+	<? 
+
+
+	if ($totalpages > 1) {
+
+		for($i = 0; $i < $totalpages+1; $i++){
+			
+			$pagenumber = $i+1;
+
+			echo "\t<option value='$i'"; 
+			if($page == $i) echo " selected"; 
+			echo ">$pagenumber</option>\n";
+
+		}
+
+
+	}
+
+	?>
+	</select>
+	</form>
+	</td>
+  </tr>
+</table>
+
+
+<table width="997" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="3%"  class="zagolovor"  rowspan="2" style='text-align:center;'>№</td>
+		<td width="18%" class="zagolovor" rowspan="2"><span <? echo @$sortedclass; ?>>Ник на форумах (настоящее имя)</span> 
+<!-- 		<a href="<? echo $siteurl.$sign; ?>orderby=nickname&ascdesc=asc" title="Сортировка от А до Я"><img src="./img/arrow_down.gif"></a>
+		<a href="<? echo $siteurl.$sign; ?>orderby=nickname&ascdesc=desc" title="Сортировка от Я до А"><img src="./img/arrow_up.gif"></a> -->
+		</td>
+		<td width="13%" class="zagolovor" rowspan="2">Должность</td>
+		<td width="20%" class="zagolovor" rowspan="2">Компания / Род деятельности</td>
+		<td width="10%"	class="zagolovor" rowspan="2">Окажу помощь</td>
+		<td width="22%" class="zagolovor" colspan="4" id="finita">Контакты</td>
+	</tr> 
+
+ 	<tr>
+		<td width="4%" class="zagolovor">Э-почта</td>
+		<td width="4%" class="zagolovor">Аська</td> 
+		<td width="4%" class="zagolovor">Телефон</td>
+		<td width="4%" class="zagolovor" id="fin">Сайт</td>
+	</tr>
+<?
+
+for ($i=0; $i < mysql_num_rows($res); $i++)
+	
+	{
+	echo "<tr class='listing'>";
+	$f = mysql_fetch_array($res);
+	$number = $i+$startobject;
+
+	$name = $company = $icqhidden = $phonehidden = $emailhidden = $urlhidden = "";
+
+	if (!empty($f['name'])) $name = "<span style='font-size: 80%;'>($f[name])</span>";
+	if (!empty($f['company']) && !empty($f['position'])) $company = "<div style='padding-top: 6px;'>$f[company]</div>";
+	if (!empty($f['company']) && empty($f['position'])) $company = "$f[company]";
+	if (!empty($f['activity'])) $activity = "<div style='margin-top: 5px;' title='$f[activity]'>" . limitVisiblePart($f['activity'],40) . "</div>";
+
+	$starturl = "<a href='http://" . str_replace("http://","",$f['url']) . "' target='_blank'>"; $endurl = "</a>";
+
+	if (empty($f['icq'])) $icqhidden = "_hidden";
+	if (empty($f['phone'])) $phonehidden = "_hidden";
+	if (empty($f['email'])) $emailhidden = "_hidden";
+	if (empty($f['url'])) { $urlhidden = "_hidden"; $endurl=$starturl=null; }
+
+	echo
+	"
+		<td class='columns1' id='center'>$number</td>
+
+	<td class='columns1'>
+		<a href='./?action=view&id=$f[id]' style='text-decoration: underline; font-size: 150%; color: #003399;'><B>$f[nickname]</B> $name</a>
+		<div style='font-size: 90%; color: #666666;'>$f[region_id]</div></td>
+
+	<td class='columns1'>
+	<div style='font-size: 110%;'>$f[position]&nbsp;</div>
+	</td>
+
+	<td class='columns1' style='color: #666;'>
+	$company $activity&nbsp;
+	</td>
+
+	<td class='columns1' id='center' title='$f[willhelp]' style='background-color: #E1EEF7;'>". limitVisiblePart($f['willhelp'],40) ."&nbsp;</td>
+	
+	
+	<td class='columns1' id='center'>";
+
+	if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin']!== "yes") { echo "
+	
+	<a href='javascript:void(0)' onclick=\"openURL('$f[id]')\"><img src='./img/email$emailhidden.png' title='Написать письмо' width='16' height='16'></a>";
+
+	}
+
+	else echo "<a href='mailto:$f[email]'><img src='./img/email$emailhidden.png' title='Написать письмо' width='16' height='16'></a>";
+	
+	
+	echo "</td>
+
+	<td class='columns1' id='center'><img src='./img/icq$icqhidden.gif' title='$f[icq]' width='16' height='16'></td>
+	<td class='columns1' id='center'><img src='./img/telephone$phonehidden.gif' title='$f[phone]' width='16' height='16'></td>
+	<td class='columns1' id='center'>$starturl<img src='./img/url$urlhidden.gif' title='$f[url]' width='16' height='16'>$endurl</td>
+	
+	</tr>";
+
+	}
+
+?>
+</table>
+
+<? } ?>
