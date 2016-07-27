@@ -267,7 +267,7 @@ input.auto {
 }
 
 .subheader a {
-	padding: 6px;
+	padding: 6px 6px 5px 6px;
 	float: left;
 	display: block;
 	border: 1px solid #689ACC;
@@ -286,6 +286,7 @@ input.auto {
 	border-right-width: 2px;
 	border-bottom-width: 0px;
 	position: relative;
+	padding-bottom: 6px;
 }
 
 .subheader a:hover {
