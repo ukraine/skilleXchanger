@@ -70,7 +70,7 @@ function edit_data ($details, $table) {
 				
 					";
 
-	// echo $sql;
+	echo $sql;
 
 	// Don't change here
 	if (mysql_query($sql)) return 1; else return 0;

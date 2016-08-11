@@ -1,6 +1,7 @@
 <?
+session_start();
 
-error_reporting(0);
+//error_reporting(E_ALL);
 
 /*----------- БД ------------------------------- */
 
@@ -8,13 +9,10 @@ $connection = mysql_connect("localhost",
                             "yyifua_note", 
                             "3!c0-r;hgC8S");
 
-
-
 /*----------- БД иницилизация -------------------*/
 
 mysql_query("SET NAMES utf8");
 mysql_select_db("yyifua_note", $connection);
-
 
 
 /*----------- Поключение служебных файлов ------ */
@@ -34,6 +32,181 @@ $mdistrict = array("ЗАО","ВАО","Зеленоград","САО","СВАО",
 $itemlimitation = array("5", "10","20", "30", "50", "100");
 $ButtonNames = array("add" => "Добавить", "edit" => "Редактировать");
 
+/*----------- авторизация через социальные сети -------*/
+
+// вконтакте
+$vk_client_id = ''; // ID приложения
+$vk_client_secret = ''; // Защищённый ключ
+$vk_redirect_uri = 'http://skillex.nemovlyatko.com/'; // Адрес сайта
+
+$fb_client_id = ''; // Client ID
+$fb_client_secret = ''; // Client secret
+$fb_redirect_uri = 'http://skillex.nemovlyatko.com/'; // Redirect URIs
+
+// авторизация вконтакте
+if (isset($_GET['code']) and $_GET['state'] == 'vk') {
+
+    $vk_url = 'http://oauth.vk.com/authorize';
+
+    $params = array(
+        'client_id'     => $vk_client_id,
+        'redirect_uri'  => $vk_redirect_uri,
+        'response_type' => 'code'
+    );
+
+    $result = false;
+    $params = array(
+        'client_id' => $vk_client_id,
+        'client_secret' => $vk_client_secret,
+        'code' => $_GET['code'],
+        'redirect_uri' => $vk_redirect_uri
+    );
+
+    $token = json_decode(file_get_contents('https://oauth.vk.com/access_token' . '?' . urldecode(http_build_query($params))), true);
+
+    if (isset($token['access_token'])) {
+        $params = array(
+            'uids'         => $token['user_id'],
+            'email'         => $token['email'],
+            'fields'       => 'uid,first_name,last_name,email,screen_name,sex,bdate,photo_big',
+            'access_token' => $token['access_token']
+        );
+
+        $userInfo = json_decode(file_get_contents('https://api.vk.com/method/users.get' . '?' . urldecode(http_build_query($params))), true);
+        if (isset($userInfo['response'][0]['uid'])) {
+            $userInfo = $userInfo['response'][0];
+            $result = true;
+        }
+    }
+
+    if ($result) {
+
+$socialemail=$token['email'];
+$socialID=$userInfo['uid'];
+$socialname=$userInfo['first_name'];
+$socialname2=$userInfo['last_name'];
+//$socialname=iconv('utf-8','windows-1251',$socialname);
+//$socialname2=iconv('utf-8','windows-1251',$socialname2);
+//if ($socialemail == '') {$socialemail=$socialID;}
+
+//echo "Социальный ID пользователя: " . $userInfo['uid'] . '<br />';
+//echo "Email: " . $socialemail . '<br />';
+//echo "Имя: $socialname";
+
+// проверка есть ли пользователь в базе
+$result_soctop = @mysql_query("SELECT * FROM `".PREFIX."persons` WHERE email = '$socialemail'");
+if (@mysql_num_rows($result_soctop) == 0) 
+{ // нет пользователя
+srand((double)microtime()*1000000);
+$code_soc=md5(uniqid(rand()));
+$code_soc=substr($code_soc,1,12);
+$result_top1=mysql_query("insert into `".PREFIX."persons` (email,password,name,nickname) values ('$socialemail','$code_soc','$socialname $socialname2','$socialname')");
+
+$resultaut1 = @mysql_query("SELECT * FROM `".PREFIX."persons` WHERE email='$socialemail'");
+while ($myrow=mysql_fetch_array($resultaut1)) {
+$_SESSION['loggedin'] = "yes";
+$_SESSION['id']=$myrow["id"];
+$_SESSION['nickname']=$myrow["nickname"];
+$loggedin = "yes";
+$id=$myrow["id"];
+$nickname=$myrow["nickname"];
+}
+
+} // нет пользователя
+
+if (@mysql_num_rows($result_soctop) != 0) 
+{ // есть пользователь
+$resultaut1 = @mysql_query("SELECT * FROM `".PREFIX."persons` WHERE email='$socialemail'");
+while ($myrow=mysql_fetch_array($resultaut1)) {
+$_SESSION['loggedin'] = "yes";
+$_SESSION['id']=$myrow["id"];
+$_SESSION['nickname']=$myrow["nickname"];
+$loggedin = "yes";
+$id=$myrow["id"];
+$nickname=$myrow["nickname"];
+}
+
+} // есть пользователь
+
+header("Location: $vk_redirect_uri");
+
+    }
+}
+// авторизация вконтакте
+
+// авторизация facebook
+if (isset($_GET['code']) and eregi('fb',$_GET['state'])) {
+
+    $result = false;
+
+    $params = array(
+        'client_id'     => $fb_client_id,
+        'redirect_uri'  => $fb_redirect_uri,
+        'client_secret' => $fb_client_secret,
+        'code'          => $_GET['code']
+    );
+
+    $fb_url = 'https://graph.facebook.com/oauth/access_token';
+
+    $tokenInfo = null;
+    parse_str(file_get_contents($fb_url . '?' . http_build_query($params)), $tokenInfo);
+
+    if (count($tokenInfo) > 0 && isset($tokenInfo['access_token'])) {
+        $params = array('access_token' => $tokenInfo['access_token']);
+
+        $userInfo = json_decode(file_get_contents('https://graph.facebook.com/me' . '?fields=email,name&' . urldecode(http_build_query($params))), true);
+
+        if (isset($userInfo['id'])) {
+            $userInfo = $userInfo;
+            $result = true;
+        }
+    }
+
+    if ($result) {
+
+//echo "Социальный ID пользователя: " . $userInfo['id'] . '<br />';
+
+$socialemail=$userInfo['email'];
+$socialID=$userInfo['id'];
+$socialname=$userInfo['name'];
+//$socialname=iconv('utf-8','windows-1251',$socialname);
+if ($socialemail == '') {$socialemail=$socialID;}
+
+//echo "ID: $socialID<br>Имя: $socialname $socialname2<br>Email: $socialemail<br>$socialbirth";
+
+// проверка есть ли пользователь в базе
+$result_soctop = @mysql_query("SELECT * FROM `".PREFIX."persons` WHERE email = '$socialemail'");
+if (@mysql_num_rows($result_soctop) == 0) 
+{ // нет пользователя
+srand((double)microtime()*1000000);
+$code_soc=md5(uniqid(rand()));
+$code_soc=@substr($code_soc,1,12);
+$result_top1=mysql_query("insert into `".PREFIX."persons` (email,password,name,nickname) values ('$socialemail','$code_soc','$socialname $socialname2','$socialname')");
+
+$resultaut1 = @mysql_query("SELECT * FROM `".PREFIX."persons` WHERE email='$socialemail'");
+while ($myrow=mysql_fetch_array($resultaut1)) {
+$_SESSION['loggedin'] = "yes";
+$_SESSION['id']=$myrow["id"];
+$_SESSION['nickname']=$myrow["nickname"];
+}
+} // нет пользователя
+
+if (@mysql_num_rows($result_soctop) != 0) 
+{ // есть пользователь
+$resultaut1 = @mysql_query("SELECT * FROM `".PREFIX."persons` WHERE email='$socialemail'");
+while ($myrow=mysql_fetch_array($resultaut1)) {
+$_SESSION['loggedin'] = "yes";
+$_SESSION['id']=$myrow["id"];
+$_SESSION['nickname']=$myrow["nickname"];
+}
+} // есть пользователь
+
+header("Location: $fb_redirect_uri");
+
+    }
+
+}
+// авторизация facebook
 
 
 /*----------- ИНИЦИАЛИЗАЦИЯ --------------------- */
@@ -136,6 +309,44 @@ print_r($_GET);
 				  <input class='auto' type='submit' value='Войти' name="submit">
 				</TD>
 			  </TR>
+
+<tr><td></td>
+<td align=right>
+
+<?
+// авторизация вконтакте
+
+    $vk_url = 'http://oauth.vk.com/authorize';
+
+    $params = array(
+        'client_id'     => $vk_client_id,
+        'redirect_uri'  => $vk_redirect_uri,
+        'response_type' => 'code',
+        'state' => 'vk'
+    );
+
+    echo $link = '<a href="' . $vk_url . '?' . urldecode(http_build_query($params)) . '&scope=email"><img src=img/socauth_vk.png border=0></a> ';
+
+// авторизация вконтакте
+
+// авторизация facebook
+
+$fb_url = 'https://www.facebook.com/dialog/oauth';
+
+$params = array(
+    'client_id'     => $fb_client_id,
+    'redirect_uri'  => $fb_redirect_uri,
+    'state'         => 'fb',
+    'response_type' => 'code',
+    'scope'         => 'email'
+);
+
+echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) . '"><img src=img/socauth_fb.png border=0></a> ';
+// авторизация facebook
+?>
+
+</td></tr>
+
 			</TABLE>
 		</form>
 
