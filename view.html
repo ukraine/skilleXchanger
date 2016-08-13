@@ -27,13 +27,13 @@
  </tr>
 
    <tr>
-    <td class="column1">Актуальность контакта
+    <td class="column1">Актуальность данных
     </td>
     <td class='column2'><? echo ifExistGetValue('timestamp') ?></td>
   </tr>
 
    <tr>
-    <td class="column1">Настоящее имя
+    <td class="column1">Имя
     </td>
     <td class='column2'><? echo ifExistGetValue('name') ?></td>
   </tr>
@@ -44,13 +44,7 @@
     <td class='column2'><? echo ifExistGetValue('region_id') ?></td>
   </tr>
 
-   <tr>
-    <td class="column1">Профиль на форуме
-    </td>
-    <td class='column2'><a href="<? echo ifExistGetValue('forumprofile') ?>"><? echo ifExistGetValue('forumprofile') ?></a></td>
-  </tr>
-
- <tr><td colspan="2"><h4>Помощь</h4></td></tr>
+ <tr><td colspan="2"><h4>Самое важное</h4></td></tr>
 
   <tr>
     <td class="column1">Нуждаюсь в помощи в:
@@ -59,12 +53,12 @@
   </tr>	
 
   <tr>
-    <td class="column1">Окажу помощь в:
+    <td class="column1">Мои навыки:
     </td>
     <td class='column2'><? echo ifExistGetValue('willhelp') ?></td>
   </tr>	
 
-<tr><td colspan="2"><h4>Работа</h4></td></tr>
+<tr><td colspan="2"><h4>О компании</h4></td></tr>
 
   <tr>
     <td class="column1">Должность</td>
@@ -77,9 +71,14 @@
   </tr>
 
   <tr>
-    <td class="column1">Род деятельности</td>
+    <td class="column1">Описание одним абзацем</td>
     <td class='column2'><? echo $f['activity']; ?></td>
   </tr>
+
+	<tr>
+		<td class="column1">Сайт</td>
+		<td class='column2'><a href="//<? echo str_replace("http://","",$f['url']) ?>" target="_blank"><? echo ifExistGetValue('url'); ?></a>&nbsp;</td>
+	</tr>
 
 <tr><td colspan="2"><h4>Контакты</h4></td></tr>
 	
@@ -104,14 +103,18 @@
 	</tr>
 
 	<tr>
-		<td class="column1">Аська</td>
-<!-- 		<td class='column2'><a href="http://wwp.icq.com/scripts/contact.dll?msgto=<? echo ifExistGetValue('icq'); ?>"><? echo ifExistGetValue('icq'); ?></a>&nbsp;</td> -->
-		<td class='column2'><? echo ifExistGetValue('icq'); ?>&nbsp;</td>
+		<td class="column1">Фейсбук</td>
+		<td class='column2'><? echo ifExistGetValue('social_url_fb'); ?></td>
 	</tr>
 
 	<tr>
-		<td class="column1">Сайт</td>
-		<td class='column2'><a href="http://<? echo str_replace("http://","",$f['url']) ?>" target="_blank"><? echo ifExistGetValue('url'); ?></a>&nbsp;</td>
+		<td class="column1">вКонтакт</td>
+		<td class='column2'><? echo ifExistGetValue('social_url_vk'); ?></td>
+	</tr>
+
+	<tr>
+		<td class="column1">LinkedIn</td>
+		<td class='column2'><? echo ifExistGetValue('social_url_li'); ?></td>
 	</tr>
 
 <tr><td colspan="2"><h4>Другое</h4></td></tr>

@@ -1,90 +1,109 @@
-<p>Обязательные к заполнению поля помечены красной зведочкой <span class='requiredfield'>*</span></p>
+<p>Просьба максимально подробно заполнить профиль. Так проявится уважение к другим и заодно поможет партнерам найти вас.<br><br></p>
+
+<script>
+/* 13.03.2010 */
+
+function switchTab(paneId) {
+
+	// Шаг 1 - ставим общее кол-во закладок, если больше - увеличиваем на единицу, меньше - соотв. уменьшаем
+	var panes = ["0","1","2","3"];
+
+	for(n in panes) {
+
+		if (n == paneId) { 
+			document.getElementById("pane"+panes[n]).style.display = "block"; 
+			document.getElementById("tab"+panes[n]).className = "activeTab"
+		}
+
+		else { 
+			document.getElementById("pane"+panes[n]).style.display = "none"; 
+			document.getElementById("tab"+panes[n]).className = "none";
+		}
+	}
+     
+} 
+</script>
+
+<div class="listtabs">
+	<span>
+		<a href="/?action=view&id=<? echo $f["id"]; ?>" style="margin-right: 25px; background: #91BFEE; color: white;">Просмотр</a> 
+
+		<a href="javascript:void(0)" onclick="switchTab('0')" id="tab0" class="activeTab" class="">Самое важное</a> 
+		<a href="javascript:void(0)" onclick="switchTab('1')" id="tab1">Бесплатный пиар</a> 
+		<a href="javascript:void(0)" onclick="switchTab('2')" id="tab2" class="">Контакты</a>
+		<a href="javascript:void(0)" onclick="switchTab('3')" id="tab3" class="">Пароль</a>
+	</span>
+
+
+</div>
 
 
 
+<form method="post" class='addeditF' action="" style="border: 1px solid #ccc; width: 650px;">
 
-<!-- <TABLE style="height: 43px; margin-bottom: -2px; z-index:2; width: 340px !important;">
-<TR>
-	<TD width="150"><div style="
-	padding: 9px 3px 0 3px; 
-	margin-left: 10px; 
-	font-weight: bold;
-	font-size: 110%;
-	width: 130px; 
-	color: white;
-	text-align: center;
-	height: 37px; 
-	display: block;
-	background: url(./img/current-bg.gif) repeat-x;
-	margin-bottom: -16px;
-	">Простая форма</div></TD>
+	<div class="tab-panes">
 
-	<TD><div style="
-	margin-bottom: -21px;
-	font-weight: bold;
-	font-size: 110%;
-	color: #0079b2;
-	text-align: center;
-	height: 37px; 
-	">Расширенная форма</div></TD>
-</TR>
-</TABLE> -->
+		<!-- Pane 0 -->
+		<div class="divtabs" id="pane0">
 
-<form method="post" action="" style="border: 1px solid #ccc; width: 650px; background: url(./img/form-bg.gif) repeat-x;">
-        
-		<h3>Кратко о вас:</h3>
-
-			<? 
-			GenerateInputTag("name","Ваш настоящее имя");
-			echo "<span id='antis'>&nbsp;</span>";
-			GenerateInputTag("nickname","Ваш ник на форуме");
-			GenerateInputTag("email","Адрес вашей электропочты");
-			GenerateInputTag("forumprofile","Ссылка на ваш профиль на форуме");
-			GenerateInputTag("region_id","Ваш регион (населенный пункт/район)");
-
-			// выбор основного форума обитания
-			?>
-
-		<h3>О вашей работе:</h3>
-
-			<? 
-			GenerateTextAreaTag("activity","Краткое описание вашей деятельности");
-			GenerateInputTag("company","Название компании, в которой вы работаете");
-			GenerateInputTag("position","Занимаемая должность");
-			?>
-
-		<h3>Об услугах:</h3>
+		<h3>О ваших скиллах</h3>
 
 			<? 
-			GenerateTextAreaTag("willhelp","Здесь напишите, чем cможете помочь, какие услуги предоставить"); ?>
+			GenerateTextAreaTagV3("willhelp","Здесь напишите, чем cможете помочь, какие услуги предоставить"); ?>
 			<br>
 			<?
-			GenerateTextAreaTag("needhelp","Если сами нуждаетесь в помощи или услуге, напишите об этом");
+			GenerateTextAreaTagV3("needhelp","Если сами нуждаетесь в помощи или услуге, напишите об этом тут");
 			?>
 
-		<h3>Другие способы с вами связаться:</h3>
+		<h3>Хотите что-то добавить?:</h3>
+
+			<?
+			GenerateTextAreaTagV3("other","Написанное здесь отобразится в примечании к вашему профилю");
+			?>
+
+		</div>
+		<div class="divtabs" id="pane1">
+
+		<h3>О вашей компании</h3>
 
 			<? 
-			// вставка select адреса/района
-			GenerateInputTag("phone","Номер телефона (желательно мобильный)");
-			GenerateInputTag("icq","Номер аськи");
-			GenerateInputTag("url","Адрес сайта, если есть");
+			GenerateInputTagV3("company","Название");
+			GenerateTextAreaTagV3("activity","О проекте одним абзацем");
+			GenerateInputTagV3("url","Адрес сайта");
+
 			?>
 
-		<h3>Прочее:</h3>
+		</div>
+		<div class="divtabs" id="pane2">
 
-			<?
-			GenerateInputTag("govnumber","Госномер вашего авто - для приветов на дорогах"); ?>
-			<div style="color:red; padding-left: 17px;"><b>Внимание!</b> Еще раз уточню, что это поле необязательно вводить, а если вводите, то не более трех цифр и только цифр!</div><br>
-			<?
-			GenerateTextAreaTag("other","Написанное здесь отобразится в примечании к вашему профилю");
+		<h3>Как с вами связаться:</h3>
+
+			<? 
+			echo "<span id='antis'>&nbsp;</span>";
+
+			GenerateInputTagV3("name","Ваше имя");
+			GenerateInputTagV3("email","Адрес вашей электропочты");
+			GenerateInputTagV3("phone","Номер телефона");
 			?>
+			<br><br>
+			<?
+
+//			GenerateInputTagV3("icq","Аська");
+			GenerateInputTagV3("social_url_vk","Профиль в вКонтакте");
+			GenerateInputTagV3("social_url_fb","Профиль в Фейсбук");
+			GenerateInputTagV3("social_url_li","Профиль в LinkedIn");
+			?>
+
+		</div>
+		<div class="divtabs" id="pane3">
 
 		<h3>Пароль для изменения своего профилия в будущем:</h3>
 			<?
-			GenerateInputTag("password","Придумайте и впечатайте пароль");
+			GenerateInputTagV3("password","Придумайте и впечатайте пароль");
 			?>
 
+		</div>
+		</div>
 
 			<!-- admin -->
 
@@ -103,9 +122,9 @@
 			<!-- admin -->
 
 			<div class="sendrequest">
-				<input type="submit"					value="Сохранить информацию о себе в этой системе">
+				<input type="submit"					value="Сохранить">
 				<input type="hidden"	name="action"	value="do_<? echo strtolower($_GET['action']); ?>">
-				<? GenerateInputTag("id","","hidden"); ?>
+				<? GenerateInputTagV3("id","","hidden"); ?>
 			</div>
 
 <script language="JavaScript">

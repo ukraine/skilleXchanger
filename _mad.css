@@ -41,11 +41,13 @@ h2 {
 }
 
 h3 {
-	padding: 8px;
-	background-color: #e5e5e5;
-	margin: 15px 0;
-	font-size: 120%;
-	border-bottom: 1px solid #ccc;
+/* padding: 8px; */
+padding: 0 0 0 11px;
+color: #1e63a8;
+margin: 35px 0 0;
+font-size: 160%;
+/*border-bottom: 1px solid #ccc;
+color: white;*/
 }
 
 h3#first {
@@ -181,6 +183,10 @@ select#month, input#month {
 
 select#month {
 	width: 180px;
+}
+
+.sendrequest {
+	margin-bottom: 15px;
 }
 
 .sendrequest input {
@@ -793,3 +799,114 @@ div.unhide {
 }
 
 #labelnickname { display:none;}
+
+/* LOGIN BUTTONS */
+
+.login_facebook, .login_vk{
+    display: inline-block;
+    color: #ffffff !important;
+    font-size: 18px;
+    height: 38px;
+	padding: 12px 10px 0 5px;
+	width: 100px;
+    border-radius: 5px;
+	font-size: 90%;
+    text-decoration: none;
+/*    border: 1px solid #FFF; */
+    vertical-align: top;
+	margin: 2px !important;
+}
+.login_facebook{
+    margin-right: 20px;
+    background: url(/img/social_login.png) 6px 7px no-repeat #36549b;
+}
+.login_vk{
+    background: url(/img/social_login.png) 6px -157px no-repeat #3d6695;
+}
+.login_facebook:hover{
+    border-color: #002157;
+    color: #ffffff;
+    background: url(/img/social_login.png) 6px 7px no-repeat #4a65a5;
+}
+.login_vk:hover{
+    border-color: #003471;
+    color: #ffffff;
+    background: url(/img/social_login.png) 6px -157px no-repeat #5176a0;
+}
+.login_facebook:active, .login_vk:active{
+    padding: 13px 39px 0 76px;
+    height: 37px;
+}	
+
+/* LOGIN BUTTONS */
+
+#antis {display: none;}
+
+.addeditF {
+	padding: 0 25px 15px;
+}
+
+.addedit textarea, .addedit input { 
+width: 95%;
+margin: 12px 0 0 12px;
+font-size: 130%;
+height: 26px;
+}
+
+.addedit textarea {
+	height: 150px;
+}
+
+/* PANES */
+
+.listtabs {
+	padding: 0 0 12px 0;
+	margin-bottom: -8px;
+}
+
+.listtabs span {
+	margin-left: 20px;
+}
+
+.listtabs span a {
+	display: inline;
+	height: 18px;
+	font-size: 90%;
+	border: 1px solid #ccc;
+	border-bottom-width: 0px;
+	padding: 5px 8px;
+	margin-right: 3px;
+	color: #336699;
+	outline: none;
+}
+
+.listtabs span a.activeTab {
+	background-color: #EEF4FD;
+	font-weight: bold;
+	border-bottom: 1px solid white;
+}
+
+.divtabs {
+	display:none;
+}
+
+#pane0 {
+	display: block;
+}
+
+.tabs {
+	border-bottom:1px solid #6083D4;
+	margin-top:18px;
+	padding-bottom:11px;
+	padding-left:8px;
+}
+
+.listtabs span#cpanelenable a {
+	border-width: 0;
+}
+
+/* PANES */
+
+input[type=submit] {
+	margin-top: 50px;
+}

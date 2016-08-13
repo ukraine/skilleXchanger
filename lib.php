@@ -153,6 +153,25 @@ function GenerateInputTag($name, $description, $type="text", $separator=" &nbsp;
 
 }
 
+function generateGroupsOfInputs($array) {
+
+	foreach($array as $key=>$val) {
+	
+		GenerateInputTagV3($name, $description, $type="text", $separator=" &nbsp; ",$br="<br>",$requiredFieldsSet="persons",$js="");
+
+	}
+
+}
+
+// Генерация тега input
+// 25.08.2007
+function GenerateInputTagV3($name, $description, $type="text", $separator=" &nbsp; ",$br="<br>",$requiredFieldsSet="persons",$js="")	{
+
+	echo "\n<input type='$type' name='$name' value='" . ifExistValueReturnIt($name) .  "' id='label$name' placeholder='$description'>$br\n";
+
+}
+
+
 // Генерация тега input
 // 25.08.2007
 function GenerateInputTagForEmailSending($name, $description)	{
@@ -210,6 +229,15 @@ function GenerateTextAreaTag($name,$description,$requiredFieldsSet="persons")	{
 	echo "<div class='textareadesc'><label for='label$name'>". IsTheFieldRequired($name,$requiredFieldsSet) . " $description</label></div><div><textarea name='$name' id='label$name'>" . ifExistValueReturnIt($name) . "</textarea></div>";
 
 }
+
+// Генерация тега textarea
+// 03.08.2008
+function GenerateTextAreaTagV3($name,$description,$requiredFieldsSet="persons")	{
+
+	echo "<div class='textareadesc'><label for='label$name'>". IsTheFieldRequired($name,$requiredFieldsSet) . "</label></div><div><textarea name='$name' id='label$name' placeholder='$description'>" . ifExistValueReturnIt($name) . "</textarea></div>";
+
+}
+
 
 // Генерация тега textarea
 // 03.08.2008
@@ -275,7 +303,7 @@ define("PREFIX","");
 // Обязательные к заполнению поля в зависимости от раздела
 $SectionsRequiredFields = array(
 	"emaform"		=> array("yourname" => "Ваше имя","email" => "Адрес вашей электропочты", "subject" => "Тема сообщения", "content" => "Краткое сообщение пользователю"),
-	"persons"		=> array("nickname" => "Ваш ник на форуме","email" => "Ваш емейл", "activity" => "Краткое описание вашей деятельности"),
+//	"persons"		=> array("nickname" => "Ваш ник на форуме","email" => "Ваш емейл", "activity" => "Краткое описание вашей деятельности"),
 
 );
 

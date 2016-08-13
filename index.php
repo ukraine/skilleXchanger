@@ -6,13 +6,14 @@ session_start();
 /*----------- БД ------------------------------- */
 
 $connection = mysql_connect("localhost", 
-                            "yyifua_note", 
-                            "3!c0-r;hgC8S");
+                            "v1tr0ff_skillex", 
+                            "QED54urIiA");
 
 /*----------- БД иницилизация -------------------*/
 
 mysql_query("SET NAMES utf8");
-mysql_select_db("yyifua_note", $connection);
+mysql_select_db("v1tr0ff_skillex", $connection);
+
 
 
 /*----------- Поключение служебных файлов ------ */
@@ -35,12 +36,12 @@ $ButtonNames = array("add" => "Добавить", "edit" => "Редактиро�
 /*----------- авторизация через социальные сети -------*/
 
 // вконтакте
-$vk_client_id = ''; // ID приложения
-$vk_client_secret = ''; // Защищённый ключ
+$vk_client_id = '5582329'; // ID приложения
+$vk_client_secret = 'aHTW0Le6s0u9hpht2hGa'; // Защищённый ключ
 $vk_redirect_uri = 'http://skillex.nemovlyatko.com/'; // Адрес сайта
 
-$fb_client_id = ''; // Client ID
-$fb_client_secret = ''; // Client secret
+$fb_client_id = '684045038409979'; // Client ID
+$fb_client_secret = 'cae0337ba3847d90cf82fb1c35da53d0'; // Client secret
 $fb_redirect_uri = 'http://skillex.nemovlyatko.com/'; // Redirect URIs
 
 // авторизация вконтакте
@@ -279,9 +280,9 @@ print_r($_GET);
 
 	<? 
 	
-	if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin']!== "yes") { ?>
+	if (!isLoggedIn()) { ?>
 
-	<div id="loginbox">
+	<div id="loginbox" style='width: 378px'>
 
 
 
@@ -289,29 +290,19 @@ print_r($_GET);
 			
 			<div style="color: red;"><b><? echo @$loggedintext; ?></b></div>
 			
-			<TABLE width="178">
-			  <TR> 
-				<TD width="58">Ваш емейл </TD>
+			<TABLE width="100%">
+			<!--   <TR> 
+				<TD align='right'></TD>
 				<TD> 
-				  <input class='auto' type='text' name='email'>
-				</TD>
-			  </TR>
-			  <TR> 
-				<TD>Пароль</TD>
-				<TD> 
-				  <input class='auto' type='password' name='password'>
-				</TD>
-			  </TR>
-			  <TR>
-				<TD>&nbsp;</TD>
-				<TD>
+				  <input class='auto' type='text' name='email' placeholder="Ваш емейл"> 				  <input class='auto' type='password' name='password' placeholder="Ваш пароль">
+
 				  <input type='hidden' name="action" value='do_login'>
 				  <input class='auto' type='submit' value='Войти' name="submit">
 				</TD>
-			  </TR>
+			  </TR> -->
 
 <tr><td></td>
-<td align=right>
+<td align=right style='vertical-align: center'>
 
 <?
 // авторизация вконтакте
@@ -325,7 +316,7 @@ print_r($_GET);
         'state' => 'vk'
     );
 
-    echo $link = '<a href="' . $vk_url . '?' . urldecode(http_build_query($params)) . '&scope=email"><img src=img/socauth_vk.png border=0></a> ';
+    echo $link = '<a href="' . $vk_url . '?' . urldecode(http_build_query($params)) . '&scope=email" class="login_vk">Войти через вКонташу</a><!--<img src=img/socauth_vk.png border=0>-->';
 
 // авторизация вконтакте
 
@@ -341,7 +332,7 @@ $params = array(
     'scope'         => 'email'
 );
 
-echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) . '"><img src=img/socauth_fb.png border=0></a> ';
+echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) . '" class="login_facebook">Войти через Facebook</a><!--<img src=img/socauth_vk.png border=0>-->';
 // авторизация facebook
 ?>
 
@@ -354,7 +345,7 @@ echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) 
 
 		<? } else { ?>
 
-		<div style='position: absolute; text-align: right: top: 3px; right: 3px;'>Приветствую, <B><? echo $_SESSION['nickname']; ?></B>! &nbsp; 
+		<div style='position: absolute; text-align: right; top: 4px; right: 3px;'>Приветствую, <B><? echo $_SESSION['nickname']; ?></B>! &nbsp; 
 		&middot; <a href="./?action=view&id=<? echo $_SESSION['id']; ?>">Мой профиль</a>
 		&middot; <a href="./?action=edit&id=<? echo $_SESSION['id']; ?>">Редактировать</a>
 		&middot; <a href="./?action=logout">Выйти</a></div>
@@ -368,8 +359,14 @@ echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) 
 	<div class="subheader">
 
 		<a href="./<? if (!empty($limit)) echo "?limit=$limit"; ?>"			<? SubHeaderTabsHighlight('default'); ?>>Список</a>
+
+<?	if (!isLoggedIn()) { ?>
+
 		<a href="./?action=add"												<? SubHeaderTabsHighlight('addedit'); ?>>Добавить</a>
-		<a href="./?action=stats"											<? SubHeaderTabsHighlight('stats'); ?> style="margin-left: 45px;">Статистика</a>
+
+		<? } ?>
+
+<!--		<a href="./?action=stats"											<? SubHeaderTabsHighlight('stats'); ?> style="margin-left: 45px;">Статистика</a> -->
 	</div>
 
 </div>
