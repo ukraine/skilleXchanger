@@ -2,7 +2,7 @@
   <tr> 
     <td width="45"><img src="./img/person.png"></td>
     <td>
-      <div><B>Поиск человека по нику</B></div>
+      <div><B>Поиск человека по имени</B></div>
       <div style="font-size: 80%; color: #999;">А себя вы уже пробовали найти?</div>
       <form method="post" action="" class="searchperson" >
         <input type="text" name="q" value="<? echo ifExistGetValue('nickname') ?>" title="Введите емейл или ник, потом жмите на кнопке &quot;Найти&quot;">
@@ -65,9 +65,9 @@
 
 <table width="997" border="0" cellspacing="0" cellpadding="0">
 	<tr>
-		<td width="33%" class="zagolovor" rowspan="2"><span <? echo @$sortedclass; ?>>Ник на форумах (настоящее имя)</span></td>
-		<td width="33%"	class="zagolovor" rowspan="2">Мои навыки</td>
-		<td width="33%"	class="zagolovor" rowspan="2">Нуждаюсь в таких компетенциях</td>
+		<td width="20%" class="zagolovor" rowspan="2"><span <? echo @$sortedclass; ?>>Контакт</span></td>
+		<td width="40%"	class="zagolovor" rowspan="2">Опыт и навыки</td>
+		<td width="40%"	class="zagolovor" rowspan="2">Испытываю нужду в</td>
 	</tr> 
 
 <?
@@ -79,53 +79,15 @@ for ($i=0; $i < mysql_num_rows($res); $i++)
 	$f = mysql_fetch_array($res);
 	$number = $i+$startobject;
 
-	$name = $company = $icqhidden = $phonehidden = $emailhidden = $urlhidden = "";
-
-	if (!empty($f['name'])) $name = "<span style='font-size: 120%;'>$f[name]</span>";
-	if (!empty($f['company']) && !empty($f['position'])) $company = "$f[company]";
-	if (!empty($f['company']) && empty($f['position'])) $company = "$f[company]";
-	if (!empty($f['activity'])) $activity = "<div style='margin-top: 5px;' title='$f[activity]'>" . limitVisiblePart($f['activity'],40) . "</div>";
-
-	$starturl = "<a href='http://" . str_replace("http://","",$f['url']) . "' target='_blank'>"; $endurl = "</a>";
-
-	if (empty($f['icq'])) $icqhidden = "_hidden";
-	if (empty($f['phone'])) $phonehidden = "_hidden";
-	if (empty($f['email'])) $emailhidden = "_hidden";
-	if (empty($f['url'])) { $urlhidden = "_hidden"; $endurl=$starturl=null; }
-
 	echo
 	"
 	<tr>
 	<td class='columns1'>
-		<a href='./?action=view&id=$f[id]' style='text-decoration: underline; font-size: 150%; color: #003399;'><B>$name</B></a>
-		<div style='font-size: 90%; color: #666666;'>$f[region_id]</div>
+		<a href='./?action=view&id=$f[id]' style='text-decoration: underline; color: #003399;'><B>$f[name]</B></a>
+	</td>
 
-		<div style='margin-top: 10px;'>$f[position] в $company</div>
-
-		<div></div>
-		<br>$activity
-
-		<br>$f[phone]
-		<br>$f[url]
-		<br>$f[icq]
-		<br>$f[linkedin]
-		<br>$f[facebook]
-		<br>$f[vkontakte]";
-
-	if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin']!== "yes") { echo "
-	
-	<a href='javascript:void(0)' onclick=\"openURL('$f[id]')\"><img src='./img/email$emailhidden.png' title='Написать письмо' width='16' height='16'></a>";
-
-	}
-
-	else echo "<a href='mailto:$f[email]'><img src='./img/email$emailhidden.png' title='Написать письмо' width='16' height='16'></a>";
-	
-	
-
-	echo "</td>
-
-	<td class='columns1' id='center' title='$f[willhelp]' style='background-color: #E1EEF7;'>". limitVisiblePart($f['willhelp'],40) ."&nbsp;</td>
-	<td class='columns1' id='center' title='$f[willhelp]' style='background-color: grey;'>". limitVisiblePart($f['askhelp'],40) ."&nbsp;</td>
+	<td class='columns1' title='$f[willhelp]' style='background-color: #E1EEF7;'>". nl2br(limitVisiblePart($f['willhelp'],210)) ."&nbsp;</td>
+	<td class='columns1' id='center' title='$f[needhelp]' style='background-color: #e5e5e5;'>".  nl2br(limitVisiblePart($f['needhelp'],210)) ."&nbsp;</td>
 	
 	</tr>	
 

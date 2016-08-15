@@ -2,14 +2,12 @@
 
 <? if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin']!== "yes") { ?>
 
-Если это ваш профиль, то вы можете<BR>
-отредактировать информацию в нем, <BR>
-введя полученные данные для входа <BR>
-в специальной форме вверху<BR>
+Если это ваш профиль, отредактировать 
+информацию в нем можно, введя войдя 
+через FB или VK или LI
 <BR>
-<I>Если ваш емейл не был указан в профиле,<BR>
-или вы по какой-то причине не получили пароль,<BR>
-обратитесь ко мне в аську (699199) за помощью</I>
+
+Если по каким-то причинам не можете войти, обратитесь <a href="javascript:void(0)" onclick="openURL('313')" style="text-decoration: underline; padding: 0; background: none; color: blue;">к автору системы</a> за помощью
 
 <? } else { ?> 
 
@@ -23,10 +21,10 @@
 <table id="90">
 
  <tr><td colspan="2" class="zagolovok">
- <h3 id="first"><? echo $f['nickname']?></h3></td>
+ <h3 id="first"><? echo $f['name']?></h3></td>
  </tr>
 
-   <tr>
+  <!-- <tr>
     <td class="column1">Актуальность данных
     </td>
     <td class='column2'><? echo ifExistGetValue('timestamp') ?></td>
@@ -36,34 +34,34 @@
     <td class="column1">Имя
     </td>
     <td class='column2'><? echo ifExistGetValue('name') ?></td>
-  </tr>
+  </tr>-->
 
-   <tr>
+<!--    <tr>
     <td class="column1">Регион
     </td>
     <td class='column2'><? echo ifExistGetValue('region_id') ?></td>
-  </tr>
+  </tr> -->
 
  <tr><td colspan="2"><h4>Самое важное</h4></td></tr>
 
   <tr>
     <td class="column1">Нуждаюсь в помощи в:
     </td>
-    <td class='column2'><? echo ifExistGetValue('needhelp') ?></td>
+    <td class='column2'><? echo nl2br(ifExistGetValue('needhelp')) ?></td>
   </tr>	
 
   <tr>
-    <td class="column1">Мои навыки:
+    <td class="column1">Могу быть полезен в:
     </td>
-    <td class='column2'><? echo ifExistGetValue('willhelp') ?></td>
+    <td class='column2'><? echo nl2br(ifExistGetValue('willhelp')) ?></td>
   </tr>	
 
 <tr><td colspan="2"><h4>О компании</h4></td></tr>
 
-  <tr>
+<!--  <tr>
     <td class="column1">Должность</td>
     <td class='column2'><? echo $f['position']; ?></td>
-  </tr	
+  </tr>	-->
 
   <tr>
     <td class="column1">Компания</td>
@@ -77,7 +75,7 @@
 
 	<tr>
 		<td class="column1">Сайт</td>
-		<td class='column2'><a href="//<? echo str_replace("http://","",$f['url']) ?>" target="_blank"><? echo ifExistGetValue('url'); ?></a>&nbsp;</td>
+		<td class='column2'><? echo isUrl('url'); ?></td>
 	</tr>
 
 <tr><td colspan="2"><h4>Контакты</h4></td></tr>
@@ -104,17 +102,17 @@
 
 	<tr>
 		<td class="column1">Фейсбук</td>
-		<td class='column2'><? echo ifExistGetValue('social_url_fb'); ?></td>
+		<td class='column2'><? echo  isUrl('social_url_fb'); ?></td>
 	</tr>
 
 	<tr>
 		<td class="column1">вКонтакт</td>
-		<td class='column2'><? echo ifExistGetValue('social_url_vk'); ?></td>
+		<td class='column2'><? echo isUrl('social_url_vk'); ?></td>
 	</tr>
 
 	<tr>
 		<td class="column1">LinkedIn</td>
-		<td class='column2'><? echo ifExistGetValue('social_url_li'); ?></td>
+		<td class='column2'><? echo isUrl('social_url_li'); ?></td>
 	</tr>
 
 <tr><td colspan="2"><h4>Другое</h4></td></tr>

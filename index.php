@@ -1,7 +1,8 @@
 <?
 session_start();
 
-//error_reporting(E_ALL);
+// ini_set('display_errors', on);
+// error_reporting(E_ALL);
 
 /*----------- БД ------------------------------- */
 
@@ -37,12 +38,154 @@ $ButtonNames = array("add" => "Добавить", "edit" => "Редактиро�
 
 // вконтакте
 $vk_client_id = '5582329'; // ID приложения
-$vk_client_secret = 'aHTW0Le6s0u9hpht2hGa'; // Защищённый ключ
+$vk_client_secret = ''; // Защищённый ключ
 $vk_redirect_uri = 'http://skillex.nemovlyatko.com/'; // Адрес сайта
 
 $fb_client_id = '684045038409979'; // Client ID
-$fb_client_secret = 'cae0337ba3847d90cf82fb1c35da53d0'; // Client secret
+$fb_client_secret = ''; // Client secret
 $fb_redirect_uri = 'http://skillex.nemovlyatko.com/'; // Redirect URIs
+
+// LinkedIn
+$li_client_id = '780iap172ymgyl'; // Client ID
+$li_client_secret = ''; // Client secret
+$li_redirect_uri = 'http://skillex.nemovlyatko.com'; // Redirect URIs
+
+// авторизация линкедин
+$state_li = generateRandString(32);
+
+$authUrlLinkedIn = 'https://www.linkedin.com/uas/oauth2/authorization?'.(http_build_query(array(
+    'state' => $state_li,
+    'scope' => '', 
+    'response_type'   => 'code',
+    'approval_prompt' => 'auto',
+    'client_id'   => $li_client_id,
+    'redirect_uri' => $li_redirect_uri
+), null, '&'));
+
+if (isset($_GET['code']) && 
+    isset($_GET['state']) && 
+    !empty($_GET['state']) && 
+    isset($_SESSION['oauth2state']) &&     
+    $_GET['state'] === $_SESSION['oauth2state']) {
+        
+    $postdata = http_build_query(
+        array(
+            'grant_type' => 'authorization_code',
+            'code' => $_GET['code'],
+            'redirect_uri'  => $li_redirect_uri, 
+            'client_id'     => $li_client_id,
+            'client_secret' => $li_client_secret
+        ), null, '&'
+    );
+    
+    $opts = array('http' =>
+        array(
+            'method'  => 'POST',
+            'Host'  => 'www.linkedin.com',
+            'header'  => 'Content-type: application/x-www-form-urlencoded',
+            'content' => $postdata
+        )
+    );
+    
+    $context  = stream_context_create($opts);
+    
+    $result = file_get_contents('https://www.linkedin.com/uas/oauth2/accessToken', false, $context);
+    
+    $result = json_decode($result);
+    
+    
+    if (is_object($result) && isset($result->access_token)) {
+        $token = $result->access_token;
+                  
+        try {
+            $params=array();
+	    	$fields = array('id', 'email-address', 'first-name', 'last-name', 'headline',
+                            'location', 'industry', 'picture-url', 'public-profile-url');
+	    	$request = join(',',$fields);
+		    $params['url'] = "https://api.linkedin.com/v1/people/~:({$request})";
+	    	$params['method']='get';
+		    $params['args']['format']='json';
+        
+            $params['headers'] = array(
+                'Authorization' => 'Bearer '.$token
+            );
+        
+            $method=isset($params['method'])?$params['method']:'get';
+            $headers = isset($params['headers'])?$params['headers']:array();
+            $args = isset($params['args'])?$params['args']:'';
+            $url = $params['url'];
+
+            if($method=='get'){
+                $url.='?'.preparePostFields($args); 
+            }
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url); 
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
+            if(is_array($headers) && !empty($headers)){
+                $headers_arr=array();
+                foreach($headers as $k=>$v){
+                    $headers_arr[]=$k.': '.$v;
+                }    
+                curl_setopt($ch,CURLOPT_HTTPHEADER,$headers_arr);
+            }
+            $result = curl_exec($ch);
+            curl_close($ch);
+            
+            $user = json_decode($result,true); 
+            
+            if ($user && is_array($user) && !empty($user)) {
+                $socialemail=isset($user['emailAddress']) ? $user['emailAddress'] : null;
+                $socialID=isset($user['id']) ? $user['id'] : null;
+                $socialname=isset($user['firstName']) ? $user['firstName'] : null;
+                $socialname2=isset($user['lastName']) ? $user['lastName'] : null;
+                $social_url_li=isset($user['publicProfileUrl']) ? $user['publicProfileUrl'] : null;
+            
+                // проверка есть ли пользователь в базе
+                $result_soctop = @mysql_query("SELECT * FROM `".PREFIX."persons` WHERE email = '$socialemail'");
+                if (@mysql_num_rows($result_soctop) == 0) 
+                { // нет пользователя
+                    srand((double)microtime()*1000000);
+                    $code_soc=md5(uniqid(rand()));
+                    $code_soc=substr($code_soc,1,12);
+                    $result_top1=mysql_query("insert into `".PREFIX."persons` (email,password,name,nickname,social_url_li) values ('$socialemail','$code_soc','$socialname $socialname2','$socialname','$social_url_li')");
+                
+                    $resultaut1 = @mysql_query("SELECT * FROM `".PREFIX."persons` WHERE email='$socialemail'");
+                    while ($myrow=mysql_fetch_array($resultaut1)) {
+                        $_SESSION['loggedin'] = "yes";
+                        $_SESSION['id']=$myrow["id"];
+                        $_SESSION['nickname']=$myrow["nickname"];
+                        $loggedin = "yes";
+                        $id=$myrow["id"];
+                        $nickname=$myrow["nickname"];
+                    }
+            
+                } // нет пользователя
+            
+                if (@mysql_num_rows($result_soctop) != 0) 
+                { // есть пользователь
+                    $resultaut1 = @mysql_query("SELECT * FROM `".PREFIX."persons` WHERE email='$socialemail'");
+                    while ($myrow=mysql_fetch_array($resultaut1)) {
+                        $_SESSION['loggedin'] = "yes";
+                        $_SESSION['id']=$myrow["id"];
+                        $_SESSION['nickname']=$myrow["nickname"];
+                        $loggedin = "yes";
+                        $id=$myrow["id"];
+                        $nickname=$myrow["nickname"];
+                    }
+            
+                } // есть пользователь
+            
+                header("Location: $li_redirect_uri");
+        
+            }
+        } catch (Exception $e) {
+            header("Location: $li_redirect_uri");
+        }   
+        
+    }    
+}
+
+$_SESSION['oauth2state'] = $state_li;
 
 // авторизация вконтакте
 if (isset($_GET['code']) and $_GET['state'] == 'vk') {
@@ -253,7 +396,7 @@ print_r($_GET);
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>Страница бизнес-контактов владельцев Nissan Note (v.1.0 beta)</title>
+	<title>Skillex - биржа скиллов и навыков с открытыми данными</title>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta name="robots" content="noindex,nofollow">
 	<link rel="stylesheet" href="./_mad.css" type="text/css">
@@ -276,7 +419,8 @@ print_r($_GET);
 <div class="demover">
 
 	<div id="loading">Выполняю...</div>
-	&nbsp; Бизнес-контактамы владельцев Nissan Note. Меняемся своими контактами здесь! <!-- <b style='color: #CC0000; background-color: white; padding: 2px 5px;' >Кстати, автор системы принимает заказы на создание сайтов, систем управления сайтом и пр. 8-499-501-654-1. Юрий</b> -->
+	&nbsp; Закрытая "биржа" скиллов и навыков для резидентов очки и заочки ФРИИ, а также бизнес инкубатора Вышки
+	<!-- <b style='color: #CC0000; background-color: white; padding: 2px 5px;' >Кстати, автор системы принимает заказы на создание сайтов, систем управления сайтом и пр. 8-499-501-654-1. Юрий</b> -->
 
 	<? 
 	
@@ -305,6 +449,10 @@ print_r($_GET);
 <td align=right style='vertical-align: center'>
 
 <?
+
+
+echo $link = '<a href="' . $authUrlLinkedIn . '" class="login_li">Войти через<br> LinkedIn</a>';
+
 // авторизация вконтакте
 
     $vk_url = 'http://oauth.vk.com/authorize';
@@ -345,7 +493,7 @@ echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) 
 
 		<? } else { ?>
 
-		<div style='position: absolute; text-align: right; top: 4px; right: 3px;'>Приветствую, <B><? echo $_SESSION['nickname']; ?></B>! &nbsp; 
+		<div style='position: absolute; text-align: right; top: 9px; right: 3px;'><!-- Приветствую, <B><? echo $_SESSION['nickname']; ?></B>! &nbsp; -->
 		&middot; <a href="./?action=view&id=<? echo $_SESSION['id']; ?>">Мой профиль</a>
 		&middot; <a href="./?action=edit&id=<? echo $_SESSION['id']; ?>">Редактировать</a>
 		&middot; <a href="./?action=logout">Выйти</a></div>
@@ -355,8 +503,10 @@ echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) 
 </div>
 
 <div class="header">
+
+<!-- <div style='font-size: 120%; padding-top: 120px; padding-left: 15px;'>Skillex позволяет основателям найти друг друга по недостающим компетенциям, а также не потерять контакты после прохождения программ в очке и заочке ФРИИ и Бизнес инкубатора вышки</div>-->
 		
-	<div class="subheader">
+	<!-- <div class="subheader">
 
 		<a href="./<? if (!empty($limit)) echo "?limit=$limit"; ?>"			<? SubHeaderTabsHighlight('default'); ?>>Список</a>
 
@@ -366,12 +516,12 @@ echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) 
 
 		<? } ?>
 
-<!--		<a href="./?action=stats"											<? SubHeaderTabsHighlight('stats'); ?> style="margin-left: 45px;">Статистика</a> -->
-	</div>
+	<a href="./?action=stats"											<? SubHeaderTabsHighlight('stats'); ?> style="margin-left: 45px;">Статистика</a>
+	</div>-->
 
 </div>
 
-<h2><?=$title; ?></h2>
+<!-- <h2><?=$title; ?></h2> -->
 
 <!-- Content -->
 <div class="content">
@@ -396,8 +546,7 @@ echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) 
 
 <div class="demover" style="border-top: 1px solid #ccc;">
 
-	&nbsp; Система управления бизнес-контактами владельцев Nissan Note (v.1.0 beta) &nbsp; 2008 (c)<a href="./?action=view&id=313" style="text-decoration: underline;">Яцив Юрий</a> - <a href="javascript:void(0)" onclick="openURL('313')" style="text-decoration: underline;">Написать письмо автору</a> - &nbsp; Аська службы поддержки 699199
-
+	&nbsp; Система управления бизнес-контактами владельцев Nissan Note (v.1.0 beta) &nbsp; 2008 (c)<a href="./?action=view&id=313" style="text-decoration: underline;">Яцив Юрий</a> - <a href="javascript:void(0)" onclick="openURL('313')" style="text-decoration: underline;">Написать письмо автору</a>
 
 </div>
 

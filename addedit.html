@@ -1,4 +1,4 @@
-<p>Просьба максимально подробно заполнить профиль. Так проявится уважение к другим и заодно поможет партнерам найти вас.<br><br></p>
+<p>Просьба максимально подробно заполнить профиль. Помогите другим найти вас<br><br></p>
 
 <script>
 /* 13.03.2010 */
@@ -26,7 +26,12 @@ function switchTab(paneId) {
 
 <div class="listtabs">
 	<span>
+
+	<?	if (isLoggedIn()) { ?>
+
 		<a href="/?action=view&id=<? echo $f["id"]; ?>" style="margin-right: 25px; background: #91BFEE; color: white;">Просмотр</a> 
+
+	<? } ?>
 
 		<a href="javascript:void(0)" onclick="switchTab('0')" id="tab0" class="activeTab" class="">Самое важное</a> 
 		<a href="javascript:void(0)" onclick="switchTab('1')" id="tab1">Бесплатный пиар</a> 
@@ -39,7 +44,9 @@ function switchTab(paneId) {
 
 
 
-<form method="post" class='addeditF' action="" style="border: 1px solid #ccc; width: 650px;">
+<form method="post" action="" class='addeditForm'>
+
+<div  class='addeditF'>
 
 	<div class="tab-panes">
 
@@ -50,7 +57,9 @@ function switchTab(paneId) {
 
 			<? 
 			GenerateTextAreaTagV3("willhelp","Здесь напишите, чем cможете помочь, какие услуги предоставить"); ?>
-			<br>
+
+		<h3>О том, что беспокоит вас или ваш проект</h3>
+
 			<?
 			GenerateTextAreaTagV3("needhelp","Если сами нуждаетесь в помощи или услуге, напишите об этом тут");
 			?>
@@ -85,10 +94,11 @@ function switchTab(paneId) {
 			GenerateInputTagV3("email","Адрес вашей электропочты");
 			GenerateInputTagV3("phone","Номер телефона");
 			?>
-			<br><br>
+
+		<h3>Ваши Соцсети</h3>
+
 			<?
 
-//			GenerateInputTagV3("icq","Аська");
 			GenerateInputTagV3("social_url_vk","Профиль в вКонтакте");
 			GenerateInputTagV3("social_url_fb","Профиль в Фейсбук");
 			GenerateInputTagV3("social_url_li","Профиль в LinkedIn");
@@ -119,6 +129,8 @@ function switchTab(paneId) {
 
 		<? } ?>
 
+</div>
+
 			<!-- admin -->
 
 			<div class="sendrequest">
@@ -132,5 +144,7 @@ function switchTab(paneId) {
 GenerateSomethingCool()
 //-->
 </script>
+
+
 
 </form>

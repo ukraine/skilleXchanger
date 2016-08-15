@@ -138,6 +138,9 @@ case "do_edit":
 		$action = "edit";
 		$tolocation = "/";
 
+			$_POST['nickname'] = $_POST['nickname1233'];
+			unset($_POST['nickname1233']);
+
 		/*
 
 		// 1.b Если мы на странице изменения пароля, то шифруем его и заносим в таблицу
@@ -157,7 +160,9 @@ case "do_edit":
 			header("Location: $location");
 		}	else {
 			$title = $translation['93'];
-			$error_msg = "Не могу добавить, где-то в процессе добавления информации системой были допушены ошибки. Свяжитесь с автором.".mysql_errno() . ": " . mysql_error();
+			$error_msg = "Не могу добавить, что пошло не так с редактированием инфы . Свяжитесь с автором.";
+
+			if ($admin) $error_msg .= mysql_errno() . ": " . mysql_error();
 		}
 
 	break;

@@ -53,7 +53,7 @@ color: white;*/
 h3#first {
 	margin-top: 0px;
 	color: #CC0033;
-	font-size: 170%;
+	font-size: 200%;
 	font-weight: bold;
 }
 
@@ -214,9 +214,8 @@ form.filter input, form.filter select {
 	top: 5px;
 	right: 5px;
 	position:absolute;
-	background-color: white;
 	right:5px;
-	top:25px; 
+	top:35px; 
 }
 
 #loginbox table td {
@@ -262,7 +261,8 @@ input.auto {
 .header{
 	font-size: 110%;
 	color: #369;
-	background: #fff url(./img/logo.gif) no-repeat;
+	background: #fff url(./img/logo-skillex.png) 10px no-repeat;
+	height: 120px;
 }
 
 /* =SUBHDR */
@@ -427,10 +427,10 @@ input.auto {
 
 
 .columns1 {
-	font-size: 110%;
+	font-size: 120%;
 	border-bottom: 1px solid #cccccc;
 	background-color: #F9F9F9;
-	padding: 4px;
+	padding: 12px;
 	text-align: left;
 }
 
@@ -691,9 +691,8 @@ div.url {
 /* 15.10.2006 */
 
 .demover {
-	padding: 5px 0px 3px 0px;
-	height: 12px;
-	font-size: 80%;
+	padding: 10px 5px 8px 5px;
+	font-size: 90%;
 	background-color: #E5E5E5;
 	border-bottom: 1px solid #ccc;
 }
@@ -774,7 +773,7 @@ div.url {
 
 .column1 {
 	background-color: #DAEAFC;
-	width: 25%;
+	width: 30%;
 	padding: 8px 6px;
 	color: #333;
 	font-weight: bold;
@@ -802,7 +801,7 @@ div.unhide {
 
 /* LOGIN BUTTONS */
 
-.login_facebook, .login_vk{
+.login_facebook, .login_vk, .login_li{
     display: inline-block;
     color: #ffffff !important;
     font-size: 18px;
@@ -823,6 +822,10 @@ div.unhide {
 .login_vk{
     background: url(/img/social_login.png) 6px -157px no-repeat #3d6695;
 }
+.login_li{
+    background: url(/img/social_login.png) 6px -157px no-repeat #0077b5;
+}
+
 .login_facebook:hover{
     border-color: #002157;
     color: #ffffff;
@@ -833,7 +836,14 @@ div.unhide {
     color: #ffffff;
     background: url(/img/social_login.png) 6px -157px no-repeat #5176a0;
 }
-.login_facebook:active, .login_vk:active{
+
+.login_li:hover{
+    border-color: #003471;
+    color: #ffffff;
+    background: url(/img/social_login.png) 6px -157px no-repeat rgba(0, 119, 181, 0.7);
+}
+
+.login_facebook:active, .login_vk:active, .login_li:active{
     padding: 13px 39px 0 76px;
     height: 37px;
 }	
@@ -843,7 +853,9 @@ div.unhide {
 #antis {display: none;}
 
 .addeditF {
-	padding: 0 25px 15px;
+	padding: 0 25px 35px;
+	border: 1px solid #ccc; 
+	width: 650px;
 }
 
 .addedit textarea, .addedit input { 
@@ -907,6 +919,20 @@ height: 26px;
 
 /* PANES */
 
-input[type=submit] {
-	margin-top: 50px;
+.addeditForm input[type=submit] {
+	margin-top: 20px;
+	width: auto;
+	padding: 12px !important;
+	height: auto;
 }
+
+.viewprofile td {
+	padding: 15px;
+}
+
+.zagolovok  {
+border: 0px solid #ccc;
+border-width: 1px 0px 1px;
+}
+
+.zagolovok h3 {padding: 0 !important}

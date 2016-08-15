@@ -277,6 +277,23 @@ function limitVisiblePart($fieldname, $limitto="16", $threedots = "") {
 
 }
 
+function isUrl($url) {
+
+	if (ifExistGetValue($url)) {
+
+	$https = array("http://","https://");
+	$rep = array("","");
+
+	$url = str_replace($https,$rep,ifExistGetValue($url));
+
+	$url = "<a href='//$url' target='_blank'>" .$url . "</a>";
+
+	return $url;
+
+	}
+
+}
+
 /*----------- Пре-инициализация -----------------*/
 
 // Чистка на всякий случай
@@ -307,4 +324,25 @@ $SectionsRequiredFields = array(
 
 );
 
-?>
+
+function generateRandString($length = 8){
+   $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
+   $numChars = strlen($chars);
+   $string = '';
+   for ($i = 0; $i < $length; $i++) {
+     $string .= substr($chars, rand(1, $numChars) - 1, 1);
+   }
+   return $string;
+}
+
+function preparePostFields($array) { 
+    if(is_array($array)){
+        $params = array();
+        foreach ($array as $key => $value) {
+            $params[] = $key . '=' . urlencode($value);
+        }
+        return implode('&', $params);
+    }else{
+        return $array;
+    }    
+}
