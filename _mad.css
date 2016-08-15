@@ -261,7 +261,7 @@ input.auto {
 .header{
 	font-size: 110%;
 	color: #369;
-	background: #fff url(./img/logo-skillex.png) 10px no-repeat;
+/*	background: #fff url(./img/logo-skillex.png) 10px no-repeat; */
 	height: 120px;
 }
 
@@ -843,10 +843,11 @@ div.unhide {
     background: url(/img/social_login.png) 6px -157px no-repeat rgba(0, 119, 181, 0.7);
 }
 
+/*
 .login_facebook:active, .login_vk:active, .login_li:active{
     padding: 13px 39px 0 76px;
     height: 37px;
-}	
+}	*/
 
 /* LOGIN BUTTONS */
 

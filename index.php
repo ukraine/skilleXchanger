@@ -419,9 +419,7 @@ print_r($_GET);
 <div class="demover">
 
 	<div id="loading">Выполняю...</div>
-	&nbsp; Закрытая "биржа" скиллов и навыков для резидентов очки и заочки ФРИИ, а также бизнес инкубатора Вышки
-	<!-- <b style='color: #CC0000; background-color: white; padding: 2px 5px;' >Кстати, автор системы принимает заказы на создание сайтов, систем управления сайтом и пр. 8-499-501-654-1. Юрий</b> -->
-
+	"Биржа" скиллов и навыков для резидентов очки и заочки ФРИИ, а также бизнес инкубатора Вышки
 	<? 
 	
 	if (!isLoggedIn()) { ?>
@@ -435,6 +433,7 @@ print_r($_GET);
 			<div style="color: red;"><b><? echo @$loggedintext; ?></b></div>
 			
 			<TABLE width="100%">
+
 			<!--   <TR> 
 				<TD align='right'></TD>
 				<TD> 
@@ -504,6 +503,8 @@ echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) 
 
 <div class="header">
 
+<div style='padding: 10px'><a href='/'><img src='/img/logo-skillex.png'></a></div>
+
 <!-- <div style='font-size: 120%; padding-top: 120px; padding-left: 15px;'>Skillex позволяет основателям найти друг друга по недостающим компетенциям, а также не потерять контакты после прохождения программ в очке и заочке ФРИИ и Бизнес инкубатора вышки</div>-->
 		
 	<!-- <div class="subheader">
@@ -546,7 +547,7 @@ echo $link = '<a href="' . $fb_url . '?' . urldecode(http_build_query($params)) 
 
 <div class="demover" style="border-top: 1px solid #ccc;">
 
-	&nbsp; Система управления бизнес-контактами владельцев Nissan Note (v.1.0 beta) &nbsp; 2008 (c)<a href="./?action=view&id=313" style="text-decoration: underline;">Яцив Юрий</a> - <a href="javascript:void(0)" onclick="openURL('313')" style="text-decoration: underline;">Написать письмо автору</a>
+	&nbsp; Skillex - биржа скиллов и навыков с открытыми данными (v.2.0 beta) &nbsp; 2008, 2016 (c) <a href="./?action=view&id=1" style="text-decoration: underline;">Ярцев Юрий</a> - <a href="javascript:void(0)" onclick="openURL('1')" style="text-decoration: underline;">Написать письмо автору</a>
 
 </div>
 

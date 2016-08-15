@@ -308,13 +308,13 @@ case "do_search":
 	$nickname = strtolower(clearHTML($_POST['q']));
 	$title = "Поиск человека";
 
-	$where = "WHERE `nickname` = '$nickname'";
+	$where = "WHERE `name` LIKE '%$nickname%'";
 
 	// Смотрим сколько контактов с таким именем
 	$count = GetTotalData("persons", $where);
 
 	$error_msg = "Человека с ником <B>$nickname</B> нет в базе данных :(
-	<br> Если вы искали себя и не нашли, то может быть добавимся? ;) Жмите на кнопке &quot;Добавить&quot; вверху";
+	<br> Если вы искали себя и не нашли, то может быть добавимся? ;) Жмите на кнопке &quot;Войти&quot; справа вверху";
 
 	// echo "For <B>$nickname</B> we found <B>$count</B> results";
 
