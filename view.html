@@ -88,16 +88,17 @@
 	}
 	else echo "<a href='mailto:$f[email]'>$f[email]</a>";
 	?>
-
-
-		
+	
 		</td>
 
 	</tr>
 
 	<tr>
 		<td class="column1">Телефон</td>
-		<td class='column2'><? echo ifExistGetValue('phone'); ?></td>
+		<td class='column2'>
+		
+	<? if (!isLoggedIn()) { ?>Виден только после входа на сайт<?	} else
+	echo ifExistGetValue('phone'); ?></td>
 	</tr>
 
 	<tr>
