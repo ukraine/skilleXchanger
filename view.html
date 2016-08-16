@@ -7,13 +7,19 @@
 через FB или VK или LI
 <BR>
 
-Если по каким-то причинам не можете войти, обратитесь <a href="javascript:void(0)" onclick="openURL('313')" style="text-decoration: underline; padding: 0; background: none; color: blue;">к автору системы</a> за помощью
+Если по каким-то причинам не можете войти, обратитесь <a href="javascript:void(0)" onclick="openURL('1')" style="text-decoration: underline; padding: 0; background: none; color: blue;">к автору системы</a> за помощью
 
-<? } else { ?> 
+<? } else { 
 
-<br><br><a href="./?action=edit&id=<?=$_GET['id'];?>">Редактировать</a>
+if ($admin) { ?>
 
-<? } ?>
+<br><br>
+
+<a href="./?action=edit&id=<?=$_GET['id'];?>">Редактировать</a>
+
+<? } 
+
+} ?>
 
 </div>
 
