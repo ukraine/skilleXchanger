@@ -823,7 +823,7 @@ div.unhide {
     background: url(/img/social_login.png) 6px -157px no-repeat #3d6695;
 }
 .login_li{
-    background: url(/img/social_login.png) 6px -157px no-repeat #0077b5;
+    background: url(/img/social_login.png) 6px -70px no-repeat #0077b5; 
 }
 
 .login_facebook:hover{
@@ -840,7 +840,7 @@ div.unhide {
 .login_li:hover{
     border-color: #003471;
     color: #ffffff;
-    background: url(/img/social_login.png) 6px -157px no-repeat rgba(0, 119, 181, 0.7);
+    background: url(/img/social_login.png) 6px -70px no-repeat rgba(0, 119, 181, 0.7);
 }
 
 /*

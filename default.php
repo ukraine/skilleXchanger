@@ -39,8 +39,17 @@ default:
 					}
 
 				}
+			
+			// $where .= " `visibility` = '1'"; 
 
-				if (!empty($where)) $where = "WHERE $where";
+				// http://skillex.nemovlyatko.com/img/social_login.png
+
+/*
+				if (!empty($where)) $where = "WHERE $where AND `visibility` = '1' AND `willhelp` != '' ";
+				else $where = "WHERE `visibility` = '1' AND `willhelp` != '' ";
+				*/
+
+				if (!empty($where)) $where = "WHERE $where ";
 
 	// echo $where;
 

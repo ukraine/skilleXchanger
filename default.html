@@ -79,6 +79,9 @@ for ($i=0; $i < mysql_num_rows($res); $i++)
 	$f = mysql_fetch_array($res);
 	$number = $i+$startobject;
 
+	// Часть информации незалогиненым пользоватетелям
+	// if (!isLoggedIn()) { $f['name'] = strtok($f['name'], " "); }
+
 	echo
 	"
 	<tr>

@@ -1,4 +1,11 @@
 <?
+
+// Большая поисковая строка над таблицей - взять с health/endo
+// Редактор профиля для админа (вкл/выкл) 
+// + Исправить иконку входа через линкедин
+// + Не показывать пустые профили
+// + Отключить 773
+
 session_start();
 
 // ini_set('display_errors', on);
@@ -37,17 +44,17 @@ $ButtonNames = array("add" => "Добавить", "edit" => "Редактиро�
 /*----------- авторизация через социальные сети -------*/
 
 // вконтакте
-$vk_client_id = ''; // ID приложения
-$vk_client_secret = ''; // Защищённый ключ
+$vk_client_id = '5582329'; // ID приложения
+$vk_client_secret = 'aHTW0Le6s0u9hpht2hGa'; // Защищённый ключ
 $vk_redirect_uri = 'http://skillex.nemovlyatko.com/'; // Адрес сайта
 
-$fb_client_id = ''; // Client ID
-$fb_client_secret = ''; // Client secret
+$fb_client_id = '684045038409979'; // Client ID
+$fb_client_secret = 'cae0337ba3847d90cf82fb1c35da53d0'; // Client secret
 $fb_redirect_uri = 'http://skillex.nemovlyatko.com/'; // Redirect URIs
 
 // LinkedIn
-$li_client_id = ''; // Client ID
-$li_client_secret = ''; // Client secret
+$li_client_id = '780iap172ymgyl'; // Client ID
+$li_client_secret = 'IxmjKd2pi78T9GFx'; // Client secret
 $li_redirect_uri = 'http://skillex.nemovlyatko.com'; // Redirect URIs
 
 // авторизация линкедин
